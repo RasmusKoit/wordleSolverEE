@@ -1,0 +1,2 @@
+# wordleSolverEE
+Solves wordle.ee
