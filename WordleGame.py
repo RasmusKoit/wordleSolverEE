@@ -1,7 +1,7 @@
 from typing import Set, List
 from random import choice
 from Word import Word
-
+from re import finditer
 
 class Game:
     words: Set[Word]
@@ -15,7 +15,7 @@ class Game:
         self.words = words
         self.word = choice(list(self.words))
         self.guesses = []
-        # print(self.word.name)
+        print(self.word.name)
 
     def start(self):
         for i in range(self.length):
@@ -27,7 +27,7 @@ class Game:
         for guess in self.guesses:
             print(guess.colored)
 
-    def ask_user(self) -> str:
+    def ask_user(self):
         result = input(f"Please enter a {str(self.length)} letter word: ")
         print(result)
         feedback = self.get_feedback(result)
@@ -41,15 +41,19 @@ class Game:
             elif result[i] == self.word.name[i]:
                 feedback += 'g'
             elif result[i] in self.word.name:
-                feedback += 'y'
-                # r_count = result.count(result[i])
-                # w_count = self.word.name.count(result[i])
-                # if r_count == w_count:
-                #     feedback += 'y'
-                # elif r_count < w_count and i < self.word.name.index(result[i]):
-                #     feedback += 'y'
-                # else:
-                #     feedback += 'w'
+                r_indices = [j.start() for j in finditer(result[i], result)]
+                w_indices = [j.start() for j in finditer(result[i], self.word.name)]
+                feedback_count = 0
+                for r in range(len(r_indices)):
+                    if r_indices[r] < i:
+                        if feedback[r_indices[r]] == 'y' or feedback[r_indices[r]] == 'g':
+                            feedback_count += 1
+                if feedback_count < len(w_indices):
+                    feedback += 'y'
+                else:
+                    feedback += 'w'
+                print(r_indices, w_indices, i)
+
         self.has_won(feedback)
         return Word(result, feedback=feedback)
 

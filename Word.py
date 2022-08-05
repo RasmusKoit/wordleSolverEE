@@ -32,11 +32,11 @@ class Word:
 
     def color(self, feedback: str):
         colored_output = ""
-        colored_output += Style.RESET_ALL
+        colored_output += RST
         if len(feedback) > 1:
-            for i in range(len(self.name)):
+            for i in range(len(feedback)):
                 if feedback[i] == "w":
-                    colored_output += self.name[i] + RST
+                    colored_output += WHITE + self.name[i] + RST
                 elif feedback[i] == "y":
                     colored_output += YELLOW + self.name[i] + RST
                 elif feedback[i] == "g":

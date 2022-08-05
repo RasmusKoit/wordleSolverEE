@@ -1,5 +1,3 @@
-import regex as regex
-
 from Word import Word
 from WordleSolver import Solver
 from WordleGame import Game
@@ -44,10 +42,10 @@ class Wordle:
             if response == "" or response.lower() == "solver":
                 self.read_words_file(self.words_file_path, "utf-8")
                 self.read_words_file(self.words_common_file_path, "utf-8")
-                return True
+                return False
             elif response == "game":
                 self.read_words_file(self.words_file_path, "utf-8")
-                return False
+                return True
 
 
 w = Wordle()
@@ -57,4 +55,3 @@ if w.select_mode():
 else:
     game = Game(w.words, w.length)
     game.start()
-
