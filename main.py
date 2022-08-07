@@ -1,7 +1,8 @@
 from Word import Word
 from WordleSolver import Solver
 from WordleGame import Game
-
+from flask import Flask, url_for, render_template
+from werkzeug.exceptions import abort
 
 class Wordle:
     words_file_path = 'dictionary/lemmad.txt'
@@ -40,18 +41,53 @@ class Wordle:
         while True:
             response = input("Choose your mode: (solver, game) [solver]: ")
             if response == "" or response.lower() == "solver":
-                self.read_words_file(self.words_file_path, "utf-8")
-                self.read_words_file(self.words_common_file_path, "utf-8")
-                return False
-            elif response == "game":
-                self.read_words_file(self.words_file_path, "utf-8")
+                self.select_solver()
                 return True
+            elif response == "game":
+                self.select_game()
+                return False
+
+    def select_solver(self):
+        self.read_words_file(self.words_file_path, "utf-8")
+        self.read_words_file(self.words_common_file_path, "utf-8")
+
+    def select_game(self):
+        self.read_words_file(self.words_file_path, "utf-8")
+
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/play')
+def play():
+    game.set_new_word()
+    generated_word = game.word.name
+    return render_template('play.html', newWord=generated_word)
+
+
+@app.route('/solver')
+def solver():
+    return render_template('solver.html')
 
 
 w = Wordle()
-if w.select_mode():
-    solver = Solver(w.words, w.length)
-    solver.start()
-else:
-    game = Game(w.words, w.length)
-    game.start()
+w.select_game()
+game = Game(w.words, w.length)
+app.run(port=80)
+
+
+
+
+
+# if w.select_mode():
+#     solver = Solver(w.words, w.length)
+#     solver.start()
+# else:
+#     game = Game(w.words, w.length)
+#     app.run(port=80, debug=True)
+#     # game.start()

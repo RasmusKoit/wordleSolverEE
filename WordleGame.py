@@ -3,6 +3,7 @@ from random import choice
 from Word import Word
 from re import finditer
 
+
 class Game:
     words: Set[Word]
     words = set()
@@ -15,13 +16,15 @@ class Game:
         self.words = words
         self.word = choice(list(self.words))
         self.guesses = []
-        print(self.word.name)
 
     def start(self):
         for i in range(self.length):
             self.ask_user()
             self.print_guesses()
         print(f"You lost, correct word was: {self.word.name}")
+
+    def set_new_word(self):
+        self.word = choice(list(self.words))
 
     def print_guesses(self):
         for guess in self.guesses:

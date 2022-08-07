@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Play wordle {% endblock %}</h1>
+    <hr>
+    <script src="../static/js/main.js"></script>
+    <div id="board-container">
+          <div id="board"></div>
+    </div>
+
+    <div id="buttonContainer">
+        <button onClick="window.location.reload();">Uus mäng</button>
+    </div>
+
+    <div id="generatedWord" hidden>{{ newWord }}</div>
+
+{% endblock %}
