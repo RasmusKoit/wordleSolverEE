@@ -1,8 +1,8 @@
+from flask import Flask, render_template
+
 from Word import Word
-from WordleSolver import Solver
 from WordleGame import Game
-from flask import Flask, url_for, render_template
-from werkzeug.exceptions import abort
+
 
 class Wordle:
     words_file_path = 'dictionary/lemmad.txt'
@@ -80,14 +80,3 @@ w.select_game()
 game = Game(w.words, w.length)
 app.run(port=80)
 
-
-
-
-
-# if w.select_mode():
-#     solver = Solver(w.words, w.length)
-#     solver.start()
-# else:
-#     game = Game(w.words, w.length)
-#     app.run(port=80, debug=True)
-#     # game.start()
